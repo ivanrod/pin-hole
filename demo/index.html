@@ -7,7 +7,7 @@ Copyright (c) 2015
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-    <title>seed-element Demo</title>
+    <title>pin-hole Demo</title>
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="../pin-hole.html">
   </head>
@@ -15,16 +15,42 @@ Copyright (c) 2015
 
     <p>An example of <code>&lt;filters&gt;</code>:</p>
 
-    <button>Say Something</button>
 
-    <pin-hole>
-      <h2>Hello pinhole</h2>
-    </pin-hole>
+    <pin-hole></pin-hole>
+
+    <template id="lag" is="dom-repeat" items="{{ courses }}" as="course" filter="{{ filters('limitTo', courses, 2) }}" >
+      <li><span class="paper-font-body1">{{ course.title }}</span></li>
+    </template>
 
     <script>
-      document.querySelector('button').addEventListener('click', function() {
-        alert(document.querySelector('pin-hole').sayHello('Hallo!'));
-      });
+
+      var myCourses = [
+      {
+        title: "Title 1",
+        authors: "Author 1",
+      },
+      {
+        title: "X Title 2",
+        authors: "Author 2",
+      },
+      {
+        title: "C Title 3",
+        authors: "Author 3",
+      },
+      {
+        title: "D Title 4",
+        authors: "Author 4"
+      },
+      {
+        title: "B Title 5",
+        authors: "Author 5",
+      },
+      {
+        title: "A Title 6",
+        authors: "Author 6",
+      },
+      ];
+
     </script>
 
   </body>
