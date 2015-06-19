@@ -1,0 +1,53 @@
+<dom-module id="my-list">
+	<template>
+	    <pin-hole></pin-hole>
+	    
+		<h2>My list</h2>
+
+	    <template id="lag" is="dom-repeat" items="{{ courses }}" as="course" filter="{{ filters('limitTo', courses, 2) }}" >
+	      <li><span class="paper-font-body1">{{ course.title }}</span></li>
+	    </template>	
+	</template>
+</dom-module>
+<script>
+	'use strict';
+
+	Polymer({
+		is: 'my-list',
+		properties: {
+			myCourses: {
+				type: Array,
+				value: [
+			      {
+			        title: 'Title 1',
+			        authors: 'Author 1',
+			      },
+			      {
+			        title: 'X Title 2',
+			        authors: 'Author 2',
+			      },
+			      {
+			        title: 'C Title 3',
+			        authors: 'Author 3',
+			      },
+			      {
+			        title: 'D Title 4',
+			        authors: 'Author 4'
+			      },
+			      {
+			        title: 'B Title 5',
+			        authors: 'Author 5',
+			      },
+			      {
+			        title: 'A Title 6',
+			        authors: 'Author 6',
+			      },
+			      ]
+			}
+		},
+
+		ready: function() {
+			console.log(this.myCourses);
+		} 
+	})
+</script>

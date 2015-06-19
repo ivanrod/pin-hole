@@ -10,48 +10,14 @@ Copyright (c) 2015
     <title>pin-hole Demo</title>
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <link rel="import" href="../pin-hole.html">
+    <link rel="import" href="my-list.html">
   </head>
   <body>
 
-    <p>An example of <code>&lt;filters&gt;</code>:</p>
+    <p>An example of <code>&lt;pin-hole&gt;</code>:</p>
 
+    <my-list><my-list>
 
-    <pin-hole></pin-hole>
-
-    <template id="lag" is="dom-repeat" items="{{ courses }}" as="course" filter="{{ filters('limitTo', courses, 2) }}" >
-      <li><span class="paper-font-body1">{{ course.title }}</span></li>
-    </template>
-
-    <script>
-
-      var myCourses = [
-      {
-        title: "Title 1",
-        authors: "Author 1",
-      },
-      {
-        title: "X Title 2",
-        authors: "Author 2",
-      },
-      {
-        title: "C Title 3",
-        authors: "Author 3",
-      },
-      {
-        title: "D Title 4",
-        authors: "Author 4"
-      },
-      {
-        title: "B Title 5",
-        authors: "Author 5",
-      },
-      {
-        title: "A Title 6",
-        authors: "Author 6",
-      },
-      ];
-
-    </script>
 
   </body>
 </html>
