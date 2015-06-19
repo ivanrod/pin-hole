@@ -4,9 +4,11 @@
 	    
 		<h2>My list</h2>
 
+
 	    <template id="lag" is="dom-repeat" items="{{ myCourses }}" as="course" filter="{{ filters('limitTo', courses, 2) }}" >
 	      <li><span class="paper-font-body1">{{ course.title }}</span></li>
 	    </template>	
+	    
 	</template>
 </dom-module>
 <script>
@@ -52,7 +54,7 @@
 
 		filters: function(){
 			var pinHoles = this.querySelector('pin-hole');
-			console.log(pinHoles)
+			//console.log(pinHoles)
 			return pinHoles.filters[arguments[0]].apply(app.filters, Array.prototype.slice.call(arguments, 1));
 		},
 	})
