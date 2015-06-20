@@ -19,26 +19,68 @@ Example:
   var PinHoleBehavior = {
 
     properties: {
+      similarTo: {
+        type: String
+      },
+      limitTo: {
+        type: Number
+      },
+      limitFrom: {
+        type: Number
+      },
+      replaceWith: {
+        type: Object,
+        value: {
+          oldItem: '',
+          newItem: ''
+        }
+      },
+      filterConfig: {
+        type: Object,
+        computed: 'bindFilterConfig(similarTo, limitTo, replaceWith)'
+      },    
     },
 
     // Element Behavior
     
+    //applyFilters(filterConfig)
+    // TODO
+    bindFilterConfig: function() {
+
+    },
+
+    // TODO
+    applyFilters: function() {
+
+    },
+
+    /**
+     * Applys a selected filter with its params
+     * @return {Object} An array element or a function
+     */
     applyFilter: function(){
      return this.filters[arguments[0]].apply(this, Array.prototype.slice.call(arguments, 1));
     },
 
+
+    /**
+     * A set of filters
+     * @type {Object}
+     */
     filters: {
-      limitTo: function(data, limit) {
+      limitTo: function(data, limit, filter) {
+        console.log(this)
         this.filters.counter = 0;
-        return this.filters._limitTo.bind(this, data, limit);
+        return this.filters._limitTo.bind(this, data, limit, filter);
       },
-      _limitTo: function(data, limit) {
+      _limitTo: function(data, limit, filter) {
         this.filters.counter += 1;
 
         if (this.filters.counter > limit) {
           return false;
         }
-        return data[this.filters.counter - 1];
+
+        return filter || true;
       },
     }
 
