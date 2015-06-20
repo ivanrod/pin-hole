@@ -1,14 +1,18 @@
 <dom-module id="my-list">
 	<template>
-	    <pin-hole></pin-hole>
+	    
 	    
 		<h2>My list</h2>
 
+<pin-hole id="pin1" mine="1">
+	<pin-hole id="pin2">
+	</pin-hole>
+</pin-hole>
 
-	    <template is="dom-repeat" items="{{ myCourses }}" as="course" filter="{{ filters('limitTo', myCourses, 2) }}" >
+
+	    <template id="repeatedItem" is="dom-repeat" items="{{ myCourses }}" as="course" filter="{{ applyFilter('limitTo', myCourses, 2) }}" >
 	      <li><span class="paper-font-body1">{{ course.title }}</span></li>
 	    </template>	
-	    
 	</template>
 </dom-module>
 <script>
@@ -48,13 +52,20 @@
 			}
 		},
 
-		attached: function() {
-						
-		},
+		behaviors: [
+			PinHoleBehavior
+		]
+		// attached: function() {
+		// 	this.$.repeatedItem.behaviors.push({x:2})
+		// 	console.log(this.$.pin2.mine)
+		// 	console.log(PinHole)
 
-		filters: function(){
-			var pinHoles = this.querySelector('pin-hole');
-			return pinHoles[arguments[0]].apply(pinHoles, Array.prototype.slice.call(arguments, 1));
-		},
+		// 	console.log(this.$.repeatedItem.behaviors)
+		// },
+
+		// filters: function(){
+		// 	var pinHoles = this.querySelector('pin-hole');
+		// 	return pinHoles[arguments[0]].apply(pinHoles, Array.prototype.slice.call(arguments, 1));
+		// },
 	})
 </script>

@@ -3,7 +3,7 @@
 Copyright (c) 2015 
 -->
 <link rel="import" href="../polymer/polymer.html">
-
+<link rel="import" href="pin-hole-behaviors.html">
 <!--
 A set of filters to use with Polymer 1.0.
 
@@ -24,8 +24,11 @@ Example:
     is: 'pin-hole',
 
     properties: {
-
     },
+
+    behaviors:[
+      PinHoleBehavior
+    ],
 
     // Element Lifecycle
 
@@ -56,22 +59,22 @@ Example:
 
     // Element Behavior
 
-    limitTo: function(data, limit) {
-      this.counter = 0;
+    // limitTo: function(data, limit) {
+    //   this.counter = 0;
 
-      return this._limitTo.bind(this, data, limit);
-    },
-    _limitTo: function(data, limit) {
-      this.counter += 1;
+    //   return this._limitTo.bind(this, data, limit);
+    // },
+    // _limitTo: function(data, limit) {
+    //   this.counter += 1;
 
-      if (this.counter > limit) {
-        return false;
-      }
-      return data;
-    },
-    currency: function() {
+    //   if (this.counter > limit) {
+    //     return false;
+    //   }
+    //   return data[this.counter - 1];
+    // },
+    // currency: function() {
 
-    },
+    // },
 
   });
 

@@ -23,22 +23,64 @@ Copyright (c) 2015
 
       setup(function(){
         this.myEl = document.querySelector('pin-hole');
+        this.myCourseList = [
+                {
+                  title: 'Title 1',
+                  authors: 'Author 1',
+                },
+                {
+                  title: 'X Title 2',
+                  authors: 'Author 2',
+                },
+                {
+                  title: 'C Title 3',
+                  authors: 'Author 3',
+                },
+                {
+                  title: 'D Title 4',
+                  authors: 'Author 4'
+                },
+                {
+                  title: 'B Title 5',
+                  authors: 'Author 5',
+                },
+                {
+                  title: 'A Title 6',
+                  authors: 'Author 6',
+                },
+              ];
       });
 
       suite('<pin-hole>', function() {
 
 
-        test('the element exists and has its functions', function() {
-            var functions = [
-            'limitTo', '_limitTo',
-            'currency,'
-            ];
-
+        test('the element exists and has its an object', function() {
             expect(this.myEl).not.to.be.undefined;
+            expect(this.myEl).to.be.an.object;
+        });
 
-            for (var i in functions) {
-              expect(this.myEl[functions[i]]).to.be.a.function;
+        suite('limitTo()', function() {
+          setup(function() {
+            this.limitedCourse = this.myEl.applyFilter('limitTo', this.myCourseList, 2);
+          });
+
+          test('returns a function', function() {
+            expect(this.limitedCourse).not.to.be.undefined;
+            expect(this.limitedCourse).to.be.a.function;
+          });
+
+          test('the instance returns an element of the array until the limit, then returns false', function() {
+
+            for (var i in this.myCourseList) {
+              //expect(this.limitedCourse()).to.be.an.object;
+              var arrayElement = this.limitedCourse();
+              if (i < 2) {
+                assert.equal(arrayElement, this.myCourseList[i])
+              } else{
+                assert.equal(arrayElement, false)
+              }
             }
+          });          
         });
 
         // test('defines the "author" property', function() {
