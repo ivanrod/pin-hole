@@ -61,16 +61,31 @@ Example:
     },
 
     // TODO
-    applyFilters: function() {
+    applyFilters: function(filterConfig) {
 
+        // similarTo
+        if (filterConfig.similarTo.text !== '') {
+          if (filterConfig.similarTo.target !== '') {
+            return item[filterConfig.similarTo.target].toLowerCase.indexOf(filterConfig.similarTo.text);
+          }
+          for (var key in item) {
+            if (item[key].toLowerCase.indexOf(filterConfig.similarTo.text)) {
+              return true;
+            }
+            return false;
+          }
+
+        }
+      }
     },
 
     /**
      * Applys a selected filter with its params
      * @return {Object} An array element or a function
+     * @example applyFilter('limitTo', myCourses, limitTo)
      */
     applyFilter: function(){
-     return this.filters[arguments[0]].apply(this, Array.prototype.slice.call(arguments, 1));
+      return this.filters[arguments[0]].apply(this, Array.prototype.slice.call(arguments, 1));
     },
 
 
