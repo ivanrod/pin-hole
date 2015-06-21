@@ -29,24 +29,35 @@ Example:
         }
       },
       limitTo: {
-        type: Number,
-        value: undefined
+        type: String,
+        value: ''
       },
       limitFrom: {
-        type: Number
+        type: String,
+        value: ''
       },
       filterConfig: {
-        type: Object,
-        computed: 'bindFilterConfig(similarTo, limitTo, replaceWith)'
+        type: Object
       },    
     },
 
+    observers: [
+      'bindFilterConfig(similarTo.text, similarTo.target, limitTo, limitFrom)'
+    ],
+
     // Element Behavior
     
-    //applyFilters(filterConfig)
-    // TODO
+    /**
+     * Default filter names.
+     * Override observers if you want to use another property names
+     */
     bindFilterConfig: function() {
-
+      console.log(this.filterConfig)
+      this.filterConfig = {
+        'similarTo': this.similarTo,
+        'limitTo': this.limitTo,
+        'limitFrom': this.limitFrom       
+      }
     },
 
     // TODO
