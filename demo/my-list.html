@@ -4,9 +4,22 @@
 	    
 		<h2>My list</h2>
 
-	    <template id="repeatedItem" is="dom-repeat" items="{{ myCourses }}" as="course" filter="{{ applyFilter('limitTo', myCourses, 2) }}" >
+		<div>
+			<input type="select" placeholder="Find courses similar to..." value={{similarTo.text::input}} />
+
+			<select value={{similarTo.target::input}}>
+			  <option value="">Everything</option>
+			  <option value="title">Title</option>
+			  <option value="authors">Author</option>
+			</select>
+		</div>
+
+		<input type="number" min="1" max="20" value="{{limitTo::input}}" />
+
+	    <template id="repeatedItem" is="dom-repeat" items="{{ myCourses }}" as="course" filter="{{ applyFilter('limitTo', myCourses, limitTo) }}" >
 	      <li><span class="paper-font-body1">{{ course.title }}</span></li>
 	    </template>	
+
 	</template>
 </dom-module>
 <script>
@@ -14,10 +27,16 @@
 
 	Polymer({
 		is: 'my-list',
+
 		behaviors: [
 			PinHoleBehavior
 		],
+
 		properties: {
+			limitTo:{
+				type:Number,
+				value: 5
+			},
 			myCourses: {
 				type: Array,
 				value: [
@@ -49,21 +68,5 @@
 			},
 
 		},
-
-
-		// attached: function() {
-		// 	this.$.repeatedItem.behaviors.push({x:2})
-		// 	console.log(this.$.pin2.mine)
-		// 	console.log(PinHole)
-
-		// 	console.log(this.$.repeatedItem.behaviors)
-		// },
-
-		// filters: function(){
-		// 	var pinHoles = this.querySelector('pin-hole');
-		// 	return pinHoles[arguments[0]].apply(pinHoles, Array.prototype.slice.call(arguments, 1));
-		// },
-		// 
-		// applyFilters(computedProperty)
 	})
 </script>

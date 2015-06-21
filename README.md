@@ -1,6 +1,6 @@
 # Pinhole
 
-A set of filters to use with polymer 1.0.
+A set of filters to use with a dom-repeat component in polymer 1.0.
 
 
 ## Dependencies
@@ -14,27 +14,35 @@ Then, go ahead and download the element's dependencies:
 
     bower install
 
+## Use
+
+You can use this behaviors in your custom elements in combination with a dom-repeat element:
+
+```javascript
+	Polymer({
+		is: 'my-list',
+		behaviors: [
+			PinHoleBehavior
+		],
+		...
+```
+
+Just add the filters and sorts to the dom-repeat element:
+```html
+<template is="dom-repeat" items="{{ myItems }}" filter="{{ applyFilters(filterConfig) }}" sort="{{ applySorts(sortConfig) }}">
+  <li><span>{{ item }}</span></li>
+</template>	
+```
+
+### Properties
+
+Use the properties added with the behavior to customize your lists: 
+
+```html
+<input type="text" placeholder="Find courses similar to..." value={{similarTo::input}} />
+```
 
 ## Testing 
 
-Simply navigate to the `/test` directory of your element to run its tests. If
-you are using Polyserve: `http://localhost:8080/components/seed-element/test/`
-
-### web-component-tester
-
-The tests are compatible with [web-component-tester](https://github.com/Polymer/web-component-tester).
-Install it via:
-
-    npm install -g web-component-tester
-
-Then, you can run your tests on _all_ of your local browsers via:
-
-    wct
-
-#### WCT Tips
-
-`wct -l chrome` will only run tests in chrome.
-
-`wct -p` will keep the browsers alive after test runs (refresh to re-run).
-
-`wct test/some-file.html` will test only the files you specify.
+Simply navigate to the `/test` directory if
+you are using Polyserve: `http://localhost:8080/components/pin-hole/test/`

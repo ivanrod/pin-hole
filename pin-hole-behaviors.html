@@ -9,7 +9,9 @@ Behaviors with a set of filters to use with Polymer 1.0 <dom-repeat>.
 
 Example:
 
-    <pin-hole></pin-hole>
+    <template is="dom-repeat" items="{{ myItems }}" filter="{{ applyFilters(filterConfig) }}" sort="{{ applySorts(sortConfig) }}">
+      <li><span>{{ item }}</span></li>
+    </template> 
 
 @demo
 -->
@@ -20,20 +22,18 @@ Example:
 
     properties: {
       similarTo: {
-        type: String
+        type: Object,
+        value: {
+          text: '',
+          target: '',
+        }
       },
       limitTo: {
-        type: Number
+        type: Number,
+        value: undefined
       },
       limitFrom: {
         type: Number
-      },
-      replaceWith: {
-        type: Object,
-        value: {
-          oldItem: '',
-          newItem: ''
-        }
       },
       filterConfig: {
         type: Object,
@@ -69,14 +69,13 @@ Example:
      */
     filters: {
       limitTo: function(data, limit, filter) {
-        console.log(this)
         this.filters.counter = 0;
         return this.filters._limitTo.bind(this, data, limit, filter);
       },
       _limitTo: function(data, limit, filter) {
         this.filters.counter += 1;
 
-        if (this.filters.counter > limit) {
+        if (limit && this.filters.counter > limit) {
           return false;
         }
 
