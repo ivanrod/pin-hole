@@ -12,7 +12,7 @@ Copyright (c) 2015
     <script src="../../web-component-tester/browser.js"></script>
 
     <!-- Step 1: import the element to test -->
-    <link rel="import" href="../pin-hole.html">
+    <link rel="import" href="pin-hole.html">
   </head>
   <body>
 
@@ -51,10 +51,9 @@ Copyright (c) 2015
               ];
       });
 
-      suite('<pin-hole>', function() {
+      suite('PinHoleBehavior', function() {
 
-
-        test('the element exists and has its an object', function() {
+        test('the element exists and it s an object', function() {
             expect(this.myEl).not.to.be.undefined;
             expect(this.myEl).to.be.an.object;
         });
@@ -81,6 +80,18 @@ Copyright (c) 2015
               }
             }
           });          
+        });
+
+        suite('similarTo()', function(){
+
+          setup(function() {
+            this.similarToCourse = this.myEl.applyFilter('similarTo', this.myCourseList[0], {});
+          });
+
+          test('filter exists and returns a boolean', function() {
+            expect(this.similarToCourse).to.be.a.boolean;
+          });
+
         });
 
         // test('defines the "author" property', function() {

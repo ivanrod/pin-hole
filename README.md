@@ -39,7 +39,7 @@ Just add the filters and sorts to the dom-repeat element:
 Use the properties added with the behavior to customize your lists: 
 
 ```html
-<input type="text" value={{similarTo::input}} />
+<input type="text" value={{ similarTo::input }} />
 ```
 
 ## Testing 

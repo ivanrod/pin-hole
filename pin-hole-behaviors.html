@@ -2,22 +2,46 @@
 @license
 Copyright (c) 2015 
 -->
-<link rel="import" href="../polymer/polymer.html">
-
-<!--
-Behaviors with a set of filters to use with Polymer 1.0 <dom-repeat>.
-
-Example:
-
-    <template is="dom-repeat" items="{{ myItems }}" filter="{{ applyFilters(filterConfig) }}" sort="{{ applySorts(sortConfig) }}">
-      <li><span>{{ item }}</span></li>
-    </template> 
-
-@demo
--->
 <script>
   'use strict';
-  /** @polymerBehavior */
+  /**
+  Behaviors with a set of filters to use with Polymer 1.0 <dom-repeat>.
+
+  ## Use
+
+  You can use this behaviors in your custom elements in combination with a dom-repeat element:
+
+  ```javascript
+    Polymer({
+      is: 'my-list',
+      behaviors: [
+        PinHoleBehavior
+      ],
+      ...
+  ```
+
+  Just add the filters and sorts to the dom-repeat element:
+  ```html
+  <template is="dom-repeat" items="{{ myItems }}" filter="{{ applyFilters(filterConfig) }}" sort="{{ applySorts(sortConfig) }}">
+    <li><span>{{ item }}</span></li>
+  </template> 
+  ```
+
+  ### Properties
+
+  Use the properties added with the behavior to customize your lists: 
+
+  ```html
+  <input type="text" value={{ similarTo::input }} />
+  ```
+
+  ## Test
+  You can watch the tests [here](/components/pin-hole/test/)
+
+  @hero hero.svg
+  @demo demo/index.html
+  @polymerBehavior PinHoleBehavior
+   */
   var PinHoleBehavior = {
 
     properties: {
@@ -62,21 +86,7 @@ Example:
 
     // TODO
     applyFilters: function(filterConfig) {
-
-        // similarTo
-        if (filterConfig.similarTo.text !== '') {
-          if (filterConfig.similarTo.target !== '') {
-            return item[filterConfig.similarTo.target].toLowerCase.indexOf(filterConfig.similarTo.text);
-          }
-          for (var key in item) {
-            if (item[key].toLowerCase.indexOf(filterConfig.similarTo.text)) {
-              return true;
-            }
-            return false;
-          }
-
-        }
-      }
+     
     },
 
     /**
@@ -94,10 +104,12 @@ Example:
      * @type {Object}
      */
     filters: {
+
       limitTo: function(data, limit, filter) {
         this.filters.counter = 0;
         return this.filters._limitTo.bind(this, data, limit, filter);
       },
+
       _limitTo: function(data, limit, filter) {
         this.filters.counter += 1;
 
@@ -106,6 +118,24 @@ Example:
         }
 
         return filter || true;
+      },
+
+      similarTo: function(item, data) {
+        if (data.text && data.text !== '') {
+          if (data.target && data.target !== '') {
+            return item[data.target].toLowerCase.indexOf(data.text);
+          }
+          for (var key in item) {
+            if (item[key].toLowerCase.indexOf(data.text)) {
+              return true;
+            }
+            return false;
+          }
+
+        }
+
+        return false;
+
       },
     }
 
