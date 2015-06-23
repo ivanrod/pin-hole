@@ -85,12 +85,42 @@ Copyright (c) 2015
         suite('similarTo()', function(){
 
           setup(function() {
-            this.similarToCourse = this.myEl.applyFilter('similarTo', this.myCourseList[0], {});
+            this.similarToCourse = this.myEl.applyFilter('similarTo', this.myCourseList[0], {text: 'title', target: ''});
+
+
           });
 
           test('filter exists and returns a boolean', function() {
             expect(this.similarToCourse).to.be.a.boolean;
           });
+
+          test('filter returns true if text is similar to one of element fields', function() {
+            expect(this.similarToCourse).to.equal(true);
+          });
+
+          test('filter returns true if text is similar to one specific element field', function() {
+            this.similarToTitle = this.myEl.applyFilter('similarTo', this.myCourseList[0], {text: 'title', target: 'title'});
+
+            expect(this.similarToTitle).to.equal(true);
+          });          
+
+          test('filter returns false if text is not similar to one of element fields', function() {
+            this.nonSimilarToCourse = this.myEl.applyFilter('similarTo', this.myCourseList[0], {text: 'x', target: ''});
+
+            expect(this.nonSimilarToCourse).to.equal(false);
+          });
+
+          test('filter returns false if text is not similar to one specific element field', function() {
+            this.nonSimilarToTitle = this.myEl.applyFilter('similarTo', this.myCourseList[0], {text: 'o', target: 'title'});
+
+            expect(this.nonSimilarToTitle).to.equal(false);
+          }); 
+
+          test('filter returns true if text is empty', function() {
+            this.noText = this.myEl.applyFilter('similarTo', this.myCourseList[0], {text: '', target: ''});
+
+            expect(this.noText).to.equal(true);
+          }); 
 
         });
 

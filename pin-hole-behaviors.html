@@ -111,7 +111,7 @@ Copyright (c) 2015
       },
 
       _limitTo: function(data, limit, filter) {
-        this.filters.counter += 1;
+        this.filters.counter++;
 
         if (limit && this.filters.counter > limit) {
           return false;
@@ -123,18 +123,17 @@ Copyright (c) 2015
       similarTo: function(item, data) {
         if (data.text && data.text !== '') {
           if (data.target && data.target !== '') {
-            return item[data.target].toLowerCase.indexOf(data.text);
+            var compare = ~item[data.target].toLowerCase().indexOf(data.text);
+            return (compare !== 0);
           }
           for (var key in item) {
-            if (item[key].toLowerCase.indexOf(data.text)) {
-              return true;
-            }
-            return false;
+            var compare = ~item[key].toLowerCase().indexOf(data.text);
+            return (compare !== 0);
           }
 
         }
 
-        return false;
+        return true;
 
       },
     }
