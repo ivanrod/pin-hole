@@ -62,7 +62,7 @@ Copyright (c) 2015
     },
 
     observers: [
-      'bindFilterConfig(similarTo.text, similarTo.target, limitTo, limitFrom)'
+      'bindFilterConfig(similarTo.text, similarTo.target, limitTo)'
     ],
 
     // Element Behavior
@@ -72,7 +72,7 @@ Copyright (c) 2015
      * Override observers if you want to use another property names
      */
     bindFilterConfig: function() {
-      console.log(this.filterConfig)
+      //console.log(this.filterConfig)
       this.filterConfig = {
         'similarTo': this.similarTo,
         'limitTo': this.limitTo,
@@ -81,14 +81,28 @@ Copyright (c) 2015
     },
 
     // TODO
-    applyFilters: function(filterConfig) {
-     
+    /**
+     * Apply all filters
+     * @param  {Object} filterConfig 
+     * @param  {Array} items        
+     * @return {function}              
+     * @example
+     * applyFilters(filterConfig,myCourses)
+     */
+    applyFilters: function(filterConfig, items) {
+      var itemFilters = function(item) {
+        return this.applyFilter('similarTo', item, filterConfig.similarTo);
+        //return this.similarTo(item, filterConfig.similarTo)
+      };
+
+      return this.applyFilter('limitTo', items, filterConfig.limitTo, itemFilters);
     },
 
     /**
      * Applys a selected filter with its params
      * @return {Object} An array element or a function
-     * @example applyFilter('limitTo', myCourses, limitTo)
+     * @example 
+     * applyFilter('limitTo', myCourses, limitTo)
      */
     applyFilter: function(){
       return this.filters[arguments[0]].apply(this, Array.prototype.slice.call(arguments, 1));
@@ -101,6 +115,10 @@ Copyright (c) 2015
      */
     filters: {
 
+      ///////////////////
+      // Items filters //
+      ///////////////////
+
       limitTo: function(data, limit, filter) {
         this.filters.counter = 0;
         return this.filters._limitTo.bind(this, data, limit, filter);
@@ -112,11 +130,16 @@ Copyright (c) 2015
         if (limit && this.filters.counter > limit) {
           return false;
         }
-
+        
         return filter || true;
       },
 
+      //////////////////
+      // Item Filters //
+      //////////////////
+
       similarTo: function(item, data) {
+        console.log('similarTo entrando...')
         if (data.text && data.text !== '') {
           if (data.target && data.target !== '') {
             var compare = ~item[data.target].toLowerCase().indexOf(data.text);
