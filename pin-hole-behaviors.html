@@ -81,56 +81,26 @@ Copyright (c) 2015
       }
     },
 
-    tryoutThis: {
-      m:function(){return 'Title 1'}
-      },
-    tryout: function(item){
-      var x = this.$.repeatedItem
-      console.log('entrando...', x)
-      if (this.similarTo.text && this.similarTo.text !== '') {
-        if (this.similarTo.target && this.similarTo.target !== '') {
-          var compare = ~item[this.similarTo.target].toLowerCase().indexOf(this.similsimilarTo.text);
-          return (compare !== 0);
-        }
-        for (var key in item) {
-          var compare = ~item[key].toLowerCase().indexOf(this.similarTo.text);
-          return (compare !== 0);
-        }
 
-      }
-
-      return true;
-
-    },
-
-    prework: function(filterConfig) {
+    // TODO
+    /**
+     * Apply all filters
+     * @param  {Object} filterConfig
+     * @return {function}
+     * @example
+     * applyFilters(filterConfig)
+     */
+    applyFilters: function(filterConfig) {
       var that = this;
       this.filters.counter = 0;
       return function(item) {
         var indexOfItem = this.items.indexOf(item);
         console.log('filterconfig', filterConfig)
         console.log('filtro', that.filters.similarTo(item, filterConfig))
-        return that.filters._limitTo(indexOfItem, filterConfig.limitTo) &&
+        return that.filters.limitTo(indexOfItem, filterConfig.limitTo) &&
                 that.filters.similarTo(item, filterConfig);
 
       };
-    },
-    // TODO
-    /**
-     * Apply all filters
-     * @param  {Object} filterConfig
-     * @param  {Array} items
-     * @return {function}
-     * @example
-     * applyFilters(filterConfig,myCourses)
-     */
-    applyFilters: function(filterConfig, items) {
-      var itemFilters = function(item) {
-        return this.applyFilter('similarTo', item, filterConfig.similarTo);
-        //return this.similarTo(item, filterConfig.similarTo)
-      };
-
-      return this.applyFilter('limitTo', items, filterConfig.limitTo, itemFilters);
     },
 
     /**
@@ -154,14 +124,7 @@ Copyright (c) 2015
       // Items filters //
       ///////////////////
 
-      limitTo: function(data, limit) {
-        this.filters.counter = 0;
-
-        return this.filters._limitTo.bind(this, data, limit);
-      },
-
-      _limitTo: function(indexOfItem, limit) {
-console.log(arguments)
+      limitTo: function(indexOfItem, limit) {
 
         if (indexOfItem && limit && indexOfItem >= limit) {
           return false;
@@ -169,10 +132,6 @@ console.log(arguments)
 
         return true;
       },
-
-      //////////////////
-      // Item Filters //
-      //////////////////
 
       similarTo: function(item, filterConfig) {
         console.log('similarTo entrando...', filterConfig)
