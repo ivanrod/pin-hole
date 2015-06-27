@@ -1,6 +1,6 @@
 <!--
 @license
-Copyright (c) 2015 
+Copyright (c) 2015
 -->
 <script>
   'use strict';
@@ -24,12 +24,12 @@ Copyright (c) 2015
   ```html
   <template is="dom-repeat" items="{{ myItems }}" filter="{{ applyFilters(filterConfig) }}" sort="{{ applySorts(sortConfig) }}">
     <li><span>{{ item }}</span></li>
-  </template> 
+  </template>
   ```
 
   ### Properties
 
-  Use the properties added with the behavior to customize your lists: 
+  Use the properties added with the behavior to customize your lists:
 
   ```html
   <input type="text" value={{ similarTo::input }} />
@@ -57,16 +57,17 @@ Copyright (c) 2015
         value: ''
       },
       filterConfig: {
-        type: Object
-      },    
+        type: Object,
+
+      },
     },
 
     observers: [
-      'bindFilterConfig(similarTo.text, similarTo.target, limitTo)'
+      'bindFilterConfig(similarTo.text, similarTo.target, limitTo)',
     ],
 
     // Element Behavior
-    
+
     /**
      * Default filter names.
      * Override observers if you want to use another property names
@@ -76,16 +77,50 @@ Copyright (c) 2015
       this.filterConfig = {
         'similarTo': this.similarTo,
         'limitTo': this.limitTo,
-        'limitFrom': this.limitFrom       
+        'limitFrom': this.limitFrom
       }
     },
 
+    tryoutThis: {
+      m:function(){return 'Title 1'}
+      },
+    tryout: function(item){
+      var x = this.$.repeatedItem
+      console.log('entrando...', x)
+      if (this.similarTo.text && this.similarTo.text !== '') {
+        if (this.similarTo.target && this.similarTo.target !== '') {
+          var compare = ~item[this.similarTo.target].toLowerCase().indexOf(this.similsimilarTo.text);
+          return (compare !== 0);
+        }
+        for (var key in item) {
+          var compare = ~item[key].toLowerCase().indexOf(this.similarTo.text);
+          return (compare !== 0);
+        }
+
+      }
+
+      return true;
+
+    },
+
+    prework: function(filterConfig) {
+      var that = this;
+      this.filters.counter = 0;
+      return function(item) {
+        var indexOfItem = this.items.indexOf(item);
+        console.log('filterconfig', filterConfig)
+        console.log('filtro', that.filters.similarTo(item, filterConfig))
+        return that.filters._limitTo(indexOfItem, filterConfig.limitTo) &&
+                that.filters.similarTo(item, filterConfig);
+
+      };
+    },
     // TODO
     /**
      * Apply all filters
-     * @param  {Object} filterConfig 
-     * @param  {Array} items        
-     * @return {function}              
+     * @param  {Object} filterConfig
+     * @param  {Array} items
+     * @return {function}
      * @example
      * applyFilters(filterConfig,myCourses)
      */
@@ -101,7 +136,7 @@ Copyright (c) 2015
     /**
      * Applys a selected filter with its params
      * @return {Object} An array element or a function
-     * @example 
+     * @example
      * applyFilter('limitTo', myCourses, limitTo)
      */
     applyFilter: function(){
@@ -119,34 +154,35 @@ Copyright (c) 2015
       // Items filters //
       ///////////////////
 
-      limitTo: function(data, limit, filter) {
+      limitTo: function(data, limit) {
         this.filters.counter = 0;
-        return this.filters._limitTo.bind(this, data, limit, filter);
+
+        return this.filters._limitTo.bind(this, data, limit);
       },
 
-      _limitTo: function(data, limit, filter) {
-        this.filters.counter++;
+      _limitTo: function(indexOfItem, limit) {
+console.log(arguments)
 
-        if (limit && this.filters.counter > limit) {
+        if (indexOfItem && limit && indexOfItem >= limit) {
           return false;
         }
-        
-        return filter || true;
+
+        return true;
       },
 
       //////////////////
       // Item Filters //
       //////////////////
 
-      similarTo: function(item, data) {
-        console.log('similarTo entrando...')
-        if (data.text && data.text !== '') {
-          if (data.target && data.target !== '') {
-            var compare = ~item[data.target].toLowerCase().indexOf(data.text);
+      similarTo: function(item, filterConfig) {
+        console.log('similarTo entrando...', filterConfig)
+        if (filterConfig.similarTo.text && filterConfig.similarTo.text !== '') {
+          if (filterConfig.similarTo.target && filterConfig.similarTo.target !== '') {
+            var compare = ~item[filterConfig.similarTo.target].toLowerCase().indexOf(filterConfig.similarTo.text);
             return (compare !== 0);
           }
           for (var key in item) {
-            var compare = ~item[key].toLowerCase().indexOf(data.text);
+            var compare = ~item[key].toLowerCase().indexOf(filterConfig.similarTo.text);
             return (compare !== 0);
           }
 
@@ -167,7 +203,7 @@ Copyright (c) 2015
 
 
   };
-    
+
     // TODO
     // -Research the chance to create a entire component
     // -Make filters & sorts behaviors which complement PinHoleBehaviors
