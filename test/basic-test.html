@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
 @license
-Copyright (c) 2015 
+Copyright (c) 2015
 -->
 <html>
   <head>
@@ -23,6 +23,7 @@ Copyright (c) 2015
 
       setup(function(){
         this.myEl = document.querySelector('pin-hole');
+
         this.myCourseList = [
                 {
                   title: 'Title 1',
@@ -49,6 +50,15 @@ Copyright (c) 2015
                   authors: 'Author 6',
                 },
               ];
+
+              this.item = {
+                index: 0,
+                item: this.myCourseList[0]
+              };
+
+              this.filterConfig = {
+                limitTo: 5
+              }
       });
 
       suite('PinHoleBehavior', function() {
@@ -60,32 +70,42 @@ Copyright (c) 2015
 
         suite('limitTo()', function() {
           setup(function() {
-            this.limitedCourse = this.myEl.applyFilter('limitTo', this.myCourseList, 2);
+            this.limitedCourse = this.myEl.applyFilter('limitTo', this.item, this.filterConfig);
           });
 
-          test('returns a function', function() {
+          test('returns a boolean', function() {
             expect(this.limitedCourse).not.to.be.undefined;
-            expect(this.limitedCourse).to.be.a.function;
+            expect(this.limitedCourse).to.be.a.boolean;
           });
 
-          test('the instance returns an element of the array until the limit, then returns false', function() {
+          test('returns true when until the element of the array reaches the limit, then returns false', function() {
 
             for (var i in this.myCourseList) {
+              this.item.item = this.myCourseList[i];
+              this.item.index = i;
               //expect(this.limitedCourse()).to.be.an.object;
-              var arrayElement = this.limitedCourse();
-              if (i < 2) {
+              var arrayElement = this.myEl.applyFilter('limitTo', this.item, this.filterConfig);
+              if (i < 5) {
                 assert.equal(arrayElement, true)
               } else{
                 assert.equal(arrayElement, false)
               }
             }
-          });          
+          });
         });
 
         suite('similarTo()', function(){
 
           setup(function() {
-            this.similarToCourse = this.myEl.applyFilter('similarTo', this.myCourseList[0], {text: 'title', target: ''});
+            this.item.item = this.myCourseList[0];
+            this.item.index = 0;
+
+            this.filterConfig.similarTo = {
+                text: 'title',
+                target: ''
+            };
+
+            this.similarToCourse = this.myEl.applyFilter('similarTo', this.item, this.filterConfig);
 
 
           });
@@ -99,28 +119,32 @@ Copyright (c) 2015
           });
 
           test('filter returns true if text is similar to one specific element field', function() {
-            this.similarToTitle = this.myEl.applyFilter('similarTo', this.myCourseList[0], {text: 'title', target: 'title'});
+            this.filterConfig.similarTo = {text: 'title', target: 'title'}
+            this.similarToTitle = this.myEl.applyFilter('similarTo', this.item, this.filterConfig);
 
             expect(this.similarToTitle).to.equal(true);
-          });          
+          });
 
           test('filter returns false if text is not similar to one of element fields', function() {
-            this.nonSimilarToCourse = this.myEl.applyFilter('similarTo', this.myCourseList[0], {text: 'x', target: ''});
+            this.filterConfig.similarTo = {text: 'x', target: ''};
+            this.nonSimilarToCourse = this.myEl.applyFilter('similarTo', this.item, this.filterConfig);
 
             expect(this.nonSimilarToCourse).to.equal(false);
           });
 
           test('filter returns false if text is not similar to one specific element field', function() {
-            this.nonSimilarToTitle = this.myEl.applyFilter('similarTo', this.myCourseList[0], {text: 'o', target: 'title'});
+            this.filterConfig.similarTo = {text: 'o', target: 'title'};
+            this.nonSimilarToTitle = this.myEl.applyFilter('similarTo', this.item, this.filterConfig);
 
             expect(this.nonSimilarToTitle).to.equal(false);
-          }); 
+          });
 
           test('filter returns true if text is empty', function() {
-            this.noText = this.myEl.applyFilter('similarTo', this.myCourseList[0], {text: '', target: ''});
+            this.filterConfig.similarTo = {text: '', target: ''}
+            this.noText = this.myEl.applyFilter('similarTo', this.item, this.filterConfig);
 
             expect(this.noText).to.equal(true);
-          }); 
+          });
 
         });
 
