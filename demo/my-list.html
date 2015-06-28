@@ -22,9 +22,10 @@
 			<h3>Sort:</h3>
 			<select value={{sortBy::input}}>
 				<option value="">No sort</option>
-				<option value="date">Date</option>
-				<option value="title">Title</option>
-				<option value="authors">Author</option>
+				<option value="date" data-sortType="date">Date</option>
+				<option value="title" data-sortType="string">Title</option>
+				<option value="authors" data-sortType="string">Author</option>
+				<option value="email" data-sortType="email">Email</option>
 			</select>
 			<select value={{sortAD::input}}>
 				<option value="ascendent">Ascendent</option>
@@ -34,7 +35,7 @@
 
 		<div>
 			<h3>List</h3>
-	    <template id="repeatedItem" is="dom-repeat" items="{{ myCourses }}" as="course" filter="{{applyFilters(filterConfig)}}">
+	    <template id="repeatedItem" is="dom-repeat" items="{{ myCourses }}" as="course" filter="{{ applyFilters(filterConfig) }}" sort="{{ applySorts(sortConfig) }}">
 	      <li><span class="paper-font-body1">{{ course.title }}</span></li>
 	    </template>
 		</div>

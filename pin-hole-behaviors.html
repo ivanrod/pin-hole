@@ -56,14 +56,18 @@ Copyright (c) 2015
         type: String,
         value: ''
       },
+      sortBy: {
+        type: String,
+        value: ''
+      },
       filterConfig: {
         type: Object,
-
       },
     },
 
     observers: [
       'bindFilterConfig(similarTo.text, similarTo.target, limitTo)',
+      'bindSortConfig(sortBy)',
     ],
 
     // Element Behavior
@@ -73,15 +77,20 @@ Copyright (c) 2015
      * Override observers if you want to use another property names
      */
     bindFilterConfig: function() {
-      //console.log(this.filterConfig)
       this.filterConfig = {
         'similarTo': this.similarTo,
         'limitTo': this.limitTo
       }
     },
 
+    bindSortConfig: function() {
+      this.sortConfig = {
+        sorter: 'byText',
+        target: this.sortBy
+      }
+    },
 
-    // TODO
+
     /**
      * Apply all filters
      * @param  {Object} filterConfig
@@ -105,6 +114,13 @@ Copyright (c) 2015
       };
     },
 
+    applySorts: function(sortConfig){
+      var that = this;
+      return function(a,b){
+        return that.sorts[sortConfig.sorter](a, b, sortConfig.target);
+      };
+    },
+
     /**
      * Applys a selected filter with its params
      * @return {Object} An array element or a function
@@ -114,7 +130,6 @@ Copyright (c) 2015
     applyFilter: function(){
       return this.filters[arguments[0]].apply(this, Array.prototype.slice.call(arguments, 1));
     },
-
 
     /**
      * A set of filters
@@ -159,14 +174,16 @@ Copyright (c) 2015
      * @type {Object}
      */
     sorts: {
+      byText: function(a, b, target){
+        if (target === '' || a[target] === b[target]) return 0;
+        return a[target] < b[target] ? -1 : 1;
+      },
+      byDate: function(){
 
+      }
     }
 
 
   };
-
-    // TODO
-    // -Research the chance to create a entire component
-    // -Make some filters & sorts behaviors which complement PinHoleBehaviors
 
 </script>
