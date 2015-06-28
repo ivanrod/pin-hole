@@ -2,6 +2,7 @@
 
 Polymer (v 1.0.x) behaviors with a set of filters to use in combination with a dom-repeat component.
 
+[Visit the component page](http://ivanrod.github.io/pin-hole/components/pin-hole/)
 
 ## Dependencies
 
