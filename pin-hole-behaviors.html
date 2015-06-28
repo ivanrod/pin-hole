@@ -5,19 +5,31 @@ Copyright (c) 2015
 <script>
   'use strict';
   /**
-  Behaviors with a set of filters to use with Polymer 1.0 <dom-repeat>.
+  Pin-hole provides Polymer (v 1.0.x) behaviors with a set of filters to use in combination with a dom-repeat component.
 
-  ## Use
+  ## Install
+
+  Install it via bower:
+
+      bower install pin-hole
+
+  Import it in your project:
+
+  ```html
+  <link rel="import" href="../bower_components/pin-hole/pin-hole-behaviors.html">
+  ```
+
+  ## Usage
 
   You can use this behaviors in your custom elements in combination with a dom-repeat element:
 
   ```javascript
-    Polymer({
-      is: 'my-list',
-      behaviors: [
-        PinHoleBehavior
-      ],
-      ...
+  	Polymer({
+  		is: 'my-list',
+  		behaviors: [
+  			PinHoleBehavior
+  		],
+  		...
   ```
 
   Just add the filters and sorts to the dom-repeat element:
@@ -34,9 +46,15 @@ Copyright (c) 2015
   ```html
   <input type="text" value={{ similarTo::input }} />
   ```
+  Filters:
+  - similarTo
+  - limitTo
 
-  ## Test
-  You can watch the tests [here](/components/pin-hole/test/)
+
+  Sorts:
+  - byText / Date
+  - byEmailProvider TODO
+
 
   @hero hero.svg
   @demo demo/index.html
@@ -45,6 +63,13 @@ Copyright (c) 2015
   var PinHoleBehavior = {
 
     properties: {
+      /**
+       * similarTo filter property.
+       * 
+       * 2 sub-properties:
+       *  - similarTo.text . Text to compare with the item
+       *  - similarTo.target . Target sub-property of the item
+       */
       similarTo: {
         type: Object,
         value: {
@@ -82,7 +107,10 @@ Copyright (c) 2015
         'limitTo': this.limitTo
       }
     },
-
+    /**
+     * Default sort names.
+     * Override observers if you want to use another property names
+     */
     bindSortConfig: function() {
       this.sortConfig = {
         sorter: 'byText',
@@ -114,6 +142,13 @@ Copyright (c) 2015
       };
     },
 
+    /**
+     * Apply selected sorting
+     * @param  {Object} sortConfig
+     * @return {function}
+     * @example
+     * applySorts(sortConfig)
+     */
     applySorts: function(sortConfig){
       var that = this;
       return function(a,b){
@@ -125,7 +160,7 @@ Copyright (c) 2015
      * Applys a selected filter with its params
      * @return {Object} An array element or a function
      * @example
-     * applyFilter('limitTo', myCourses, limitTo)
+     * applyFilter('limitTo', itemData, filterConfig)
      */
     applyFilter: function(){
       return this.filters[arguments[0]].apply(this, Array.prototype.slice.call(arguments, 1));
@@ -141,6 +176,12 @@ Copyright (c) 2015
       // Items filters //
       ///////////////////
 
+      /**
+       * Returns true until the element of the array reaches the limit, then returns false
+       * @param {Object} item
+       * @param {Object} filterConfig
+       * @return {Boolean}
+       */
       limitTo: function(item, filterConfig) {
         var limit = filterConfig.limitTo;
 
@@ -178,6 +219,8 @@ Copyright (c) 2015
         if (target === '' || a[target] === b[target]) return 0;
         return a[target] < b[target] ? -1 : 1;
       },
+
+      // TODO
       byDate: function(){
 
       }
