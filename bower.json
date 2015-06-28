@@ -20,6 +20,10 @@
     "/test/",
     "/demo/"
   ],
+    "repository": {
+    "type": "git",
+    "url": "git://github.com/ivanrod/pin-hole.git"
+  },
   "dependencies": {
     "polymer": "Polymer/polymer#^1.0.0"
   },

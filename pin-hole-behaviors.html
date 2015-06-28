@@ -76,8 +76,7 @@ Copyright (c) 2015
       //console.log(this.filterConfig)
       this.filterConfig = {
         'similarTo': this.similarTo,
-        'limitTo': this.limitTo,
-        'limitFrom': this.limitFrom
+        'limitTo': this.limitTo
       }
     },
 
@@ -92,13 +91,16 @@ Copyright (c) 2015
      */
     applyFilters: function(filterConfig) {
       var that = this;
-      this.filters.counter = 0;
       return function(item) {
-        var indexOfItem = this.items.indexOf(item);
-        console.log('filterconfig', filterConfig)
-        console.log('filtro', that.filters.similarTo(item, filterConfig))
-        return that.filters.limitTo(indexOfItem, filterConfig.limitTo) &&
-                that.filters.similarTo(item, filterConfig);
+        var itemData = {
+          item: item,
+          index: this.items.indexOf(item),
+        };
+        var result = true;
+        for (var i in Object.keys(filterConfig)){
+          result = result && that.filters[Object.keys(filterConfig)[i]](itemData, filterConfig)
+        }
+        return result;
 
       };
     },
@@ -124,9 +126,10 @@ Copyright (c) 2015
       // Items filters //
       ///////////////////
 
-      limitTo: function(indexOfItem, limit) {
+      limitTo: function(item, filterConfig) {
+        var limit = filterConfig.limitTo;
 
-        if (indexOfItem && limit && indexOfItem >= limit) {
+        if (item.index && limit && item.index >= limit) {
           return false;
         }
 
@@ -134,14 +137,13 @@ Copyright (c) 2015
       },
 
       similarTo: function(item, filterConfig) {
-        console.log('similarTo entrando...', filterConfig)
         if (filterConfig.similarTo.text && filterConfig.similarTo.text !== '') {
           if (filterConfig.similarTo.target && filterConfig.similarTo.target !== '') {
-            var compare = ~item[filterConfig.similarTo.target].toLowerCase().indexOf(filterConfig.similarTo.text);
+            var compare = ~item.item[filterConfig.similarTo.target].toLowerCase().indexOf(filterConfig.similarTo.text);
             return (compare !== 0);
           }
-          for (var key in item) {
-            var compare = ~item[key].toLowerCase().indexOf(filterConfig.similarTo.text);
+          for (var key in item.item) {
+            var compare = ~item.item[key].toLowerCase().indexOf(filterConfig.similarTo.text);
             return (compare !== 0);
           }
 
@@ -165,6 +167,6 @@ Copyright (c) 2015
 
     // TODO
     // -Research the chance to create a entire component
-    // -Make filters & sorts behaviors which complement PinHoleBehaviors
+    // -Make some filters & sorts behaviors which complement PinHoleBehaviors
 
 </script>
