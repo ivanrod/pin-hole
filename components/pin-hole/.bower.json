@@ -1,0 +1,44 @@
+{
+  "name": "pin-hole",
+  "authors": [
+    "Iván Rodríguez <frivanrodriguez@gmail.com>"
+  ],
+  "description": "Filters to polymer 1.0",
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer",
+    "filters",
+    "pin-hole"
+  ],
+  "main": "pin-hole.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/ivanrod/pinhole/",
+  "ignore": [
+    "/.*",
+    "/test/",
+    "/demo/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ivanrod/pin-hole.git"
+  },
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.0.0",
+    "moment": "~2.10.3"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "*"
+  },
+  "_release": "42e09ca0b8",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "42e09ca0b86a1050241b7cd7b0f1f511d97f0695"
+  },
+  "_source": "git://github.com/ivanrod/pin-hole.git",
+  "_target": "master",
+  "_originalSource": "ivanrod/pin-hole",
+  "_direct": true
+}

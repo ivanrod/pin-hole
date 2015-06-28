@@ -1,0 +1,232 @@
+<!--
+@license
+Copyright (c) 2015
+-->
+<script>
+  'use strict';
+  /**
+  Pin-hole provides Polymer (v 1.0.x) behaviors with a set of filters to use in combination with a dom-repeat component.
+
+  ## Install
+
+  Install it via bower:
+
+      bower install pin-hole
+
+  Import it in your project:
+
+  ```html
+  <link rel="import" href="../bower_components/pin-hole/pin-hole-behaviors.html">
+  ```
+
+  ## Usage
+
+  You can use this behaviors in your custom elements in combination with a dom-repeat element:
+
+  ```javascript
+  	Polymer({
+  		is: 'my-list',
+  		behaviors: [
+  			PinHoleBehavior
+  		],
+  		...
+  ```
+
+  Just add the filters and sorts to the dom-repeat element:
+  ```html
+  <template is="dom-repeat" items="{{ myItems }}" filter="{{ applyFilters(filterConfig) }}" sort="{{ applySorts(sortConfig) }}">
+    <li><span>{{ item }}</span></li>
+  </template>
+  ```
+
+  ### Properties
+
+  Use the properties added with the behavior to customize your lists:
+
+  ```html
+  <input type="text" value={{ similarTo::input }} />
+  ```
+  Filters:
+  - similarTo
+  - limitTo
+
+
+  Sorts:
+  - byText / Date
+  - byEmailProvider TODO
+
+
+  @hero hero.svg
+  @demo demo/index.html
+  @polymerBehavior PinHoleBehavior
+   */
+  var PinHoleBehavior = {
+
+    properties: {
+      /**
+       * similarTo filter property.
+       * 
+       * 2 sub-properties:
+       *  - similarTo.text . Text to compare with the item
+       *  - similarTo.target . Target sub-property of the item
+       */
+      similarTo: {
+        type: Object,
+        value: {
+          text: '',
+          target: '',
+        }
+      },
+      limitTo: {
+        type: String,
+        value: ''
+      },
+      sortBy: {
+        type: String,
+        value: ''
+      },
+      filterConfig: {
+        type: Object,
+      },
+    },
+
+    observers: [
+      'bindFilterConfig(similarTo.text, similarTo.target, limitTo)',
+      'bindSortConfig(sortBy)',
+    ],
+
+    // Element Behavior
+
+    /**
+     * Default filter names.
+     * Override observers if you want to use another property names
+     */
+    bindFilterConfig: function() {
+      this.filterConfig = {
+        'similarTo': this.similarTo,
+        'limitTo': this.limitTo
+      }
+    },
+    /**
+     * Default sort names.
+     * Override observers if you want to use another property names
+     */
+    bindSortConfig: function() {
+      this.sortConfig = {
+        sorter: 'byText',
+        target: this.sortBy
+      }
+    },
+
+
+    /**
+     * Apply all filters
+     * @param  {Object} filterConfig
+     * @return {function}
+     * @example
+     * applyFilters(filterConfig)
+     */
+    applyFilters: function(filterConfig) {
+      var that = this;
+      return function(item) {
+        var itemData = {
+          item: item,
+          index: this.items.indexOf(item),
+        };
+        var result = true;
+        for (var i in Object.keys(filterConfig)){
+          result = result && that.filters[Object.keys(filterConfig)[i]](itemData, filterConfig)
+        }
+        return result;
+
+      };
+    },
+
+    /**
+     * Apply selected sorting
+     * @param  {Object} sortConfig
+     * @return {function}
+     * @example
+     * applySorts(sortConfig)
+     */
+    applySorts: function(sortConfig){
+      var that = this;
+      return function(a,b){
+        return that.sorts[sortConfig.sorter](a, b, sortConfig.target);
+      };
+    },
+
+    /**
+     * Applys a selected filter with its params
+     * @return {Object} An array element or a function
+     * @example
+     * applyFilter('limitTo', itemData, filterConfig)
+     */
+    applyFilter: function(){
+      return this.filters[arguments[0]].apply(this, Array.prototype.slice.call(arguments, 1));
+    },
+
+    /**
+     * A set of filters
+     * @type {Object}
+     */
+    filters: {
+
+      ///////////////////
+      // Items filters //
+      ///////////////////
+
+      /**
+       * Returns true until the element of the array reaches the limit, then returns false
+       * @param {Object} item
+       * @param {Object} filterConfig
+       * @return {Boolean}
+       */
+      limitTo: function(item, filterConfig) {
+        var limit = filterConfig.limitTo;
+
+        if (item.index && limit && item.index >= limit) {
+          return false;
+        }
+
+        return true;
+      },
+
+      similarTo: function(item, filterConfig) {
+        if (filterConfig.similarTo.text && filterConfig.similarTo.text !== '') {
+          if (filterConfig.similarTo.target && filterConfig.similarTo.target !== '') {
+            var compare = ~item.item[filterConfig.similarTo.target].toLowerCase().indexOf(filterConfig.similarTo.text);
+            return (compare !== 0);
+          }
+          for (var key in item.item) {
+            var compare = ~item.item[key].toLowerCase().indexOf(filterConfig.similarTo.text);
+            return (compare !== 0);
+          }
+
+        }
+
+        return true;
+
+      },
+    },
+
+    /**
+     * A set of sorts
+     * @type {Object}
+     */
+    sorts: {
+      byText: function(a, b, target){
+        if (target === '' || a[target] === b[target]) return 0;
+        return a[target] < b[target] ? -1 : 1;
+      },
+
+      // TODO
+      byDate: function(){
+
+      }
+    }
+
+
+  };
+
+</script>

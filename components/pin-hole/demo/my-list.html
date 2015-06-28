@@ -1,0 +1,96 @@
+<dom-module id="my-list">
+	<template>
+
+
+		<h2>My list</h2>
+		<div>
+			<h3>Filter:</h3>
+			<div>
+				<input type="text" placeholder="Find courses similar to..." value={{similarTo.text::input}} />
+
+				<select value={{similarTo.target::input}}>
+				  <option value="">Everything</option>
+				  <option value="title">Title</option>
+				  <option value="authors">Author</option>
+				</select>
+			</div>
+
+			<input type="number" min="1" max="20" value="{{limitTo::input}}" />
+		</div>
+
+		<div>
+			<h3>Sort:</h3>
+			<select value={{sortBy::input}}>
+				<option value="">No sort</option>
+				<option value="date" data-sortType="date">Date</option>
+				<option value="title" data-sortType="string">Title</option>
+				<option value="authors" data-sortType="string">Author</option>
+				<option value="email" data-sortType="email">Email</option>
+			</select>
+			<select value={{sortAD::input}}>
+				<option value="ascendent">Ascendent</option>
+				<option value="descendent">Descendent</option>
+			</select>
+		</div>
+
+		<div>
+			<h3>List</h3>
+	    <template id="repeatedItem" is="dom-repeat" items="{{ myCourses }}" as="course" filter="{{ applyFilters(filterConfig) }}" sort="{{ applySorts(sortConfig) }}">
+	      <li><span class="paper-font-body1">{{ course.title }}</span></li>
+	    </template>
+		</div>
+
+	</template>
+</dom-module>
+<script>
+	'use strict';
+
+	Polymer({
+		is: 'my-list',
+
+		behaviors: [
+			PinHoleBehavior
+		],
+
+		properties: {
+			limitTo:{
+				type:Number,
+				value: 5
+			},
+			myCourses: {
+				type: Array,
+				value: [
+					      {
+					        title: 'Title 1',
+					        authors: 'Author 1',
+									date: moment()
+					      },
+					      {
+					        title: 'X Title 2',
+					        authors: 'Author 2',
+									date: moment().subtract(4, 'days')
+					      },
+					      {
+					        title: 'C Title 3',
+					        authors: 'Author 3',
+									date: moment().subtract(3, 'days')
+					      },
+					      {
+					        title: 'X Title 4',
+					        authors: 'Author 4',
+									date: moment().subtract(5, 'days')
+					      },
+					      {
+					        title: 'B Title 5',
+					        authors: 'Author 5',
+					      },
+					      {
+					        title: 'A Title 6',
+					        authors: 'Author 6',
+					      },
+				      ]
+			},
+
+		},
+	})
+</script>
