@@ -65,7 +65,7 @@ Copyright (c) 2015
     properties: {
       /**
        * similarTo filter property.
-       * 
+       *
        * 2 sub-properties:
        *  - similarTo.text . Text to compare with the item
        *  - similarTo.target . Target sub-property of the item
@@ -83,7 +83,11 @@ Copyright (c) 2015
       },
       sortBy: {
         type: String,
-        value: ''
+        value: {
+            sorter: 'byText',
+            target: '',
+            order: 'descendent'
+        }
       },
       filterConfig: {
         type: Object,
@@ -92,7 +96,7 @@ Copyright (c) 2015
 
     observers: [
       'bindFilterConfig(similarTo.text, similarTo.target, limitTo)',
-      'bindSortConfig(sortBy)',
+      'bindSortConfig(sortBy.sorter, sortBy.order, sortBy.target)',
     ],
 
     // Element Behavior
@@ -113,8 +117,9 @@ Copyright (c) 2015
      */
     bindSortConfig: function() {
       this.sortConfig = {
-        sorter: 'byText',
-        target: this.sortBy
+        sorter: this.sortBy.sorter,
+        order: this.sortBy.order,
+        target: this.sortBy.target
       }
     },
 
@@ -152,7 +157,13 @@ Copyright (c) 2015
     applySorts: function(sortConfig){
       var that = this;
       return function(a,b){
-        return that.sorts[sortConfig.sorter](a, b, sortConfig.target);
+        var firstValue = a,
+            secondValue = b;
+        if(sortConfig.order === 'ascendent'){
+          firstValue = b;
+          secondValue = a;
+        }
+        return that.sorts[sortConfig.sorter](firstValue, secondValue, sortConfig.target);
       };
     },
 

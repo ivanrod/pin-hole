@@ -20,14 +20,14 @@
 
 		<div>
 			<h3>Sort:</h3>
-			<select value={{sortBy::input}}>
+			<select value={{sortBy.target::input}}>
 				<option value="">No sort</option>
 				<option value="date" data-sortType="date">Date</option>
 				<option value="title" data-sortType="string">Title</option>
 				<option value="authors" data-sortType="string">Author</option>
 				<option value="email" data-sortType="email">Email</option>
 			</select>
-			<select value={{sortAD::input}}>
+			<select value={{sortBy.order::input}}>
 				<option value="ascendent">Ascendent</option>
 				<option value="descendent">Descendent</option>
 			</select>
