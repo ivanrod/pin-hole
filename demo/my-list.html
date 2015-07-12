@@ -35,9 +35,19 @@
 
 		<div>
 			<h3>List</h3>
-	    <template id="repeatedItem" is="dom-repeat" items="{{ myCourses }}" as="course" filter="{{ applyFilters(filterConfig) }}" sort="{{ applySorts(sortConfig) }}">
-	      <li><span class="paper-font-body1">{{ course.title }}</span></li>
-	    </template>
+			<ul>
+				<template id="repeatedItem" is="dom-repeat" items="{{ myCourses }}" as="course" filter="{{ applyFilters(filterConfig) }}" sort="{{ applySorts(sortConfig) }}">
+		      <li>
+						<strong>Title: </strong><span>{{ course.title }}</span>
+						<br>
+						<strong>Authors: </strong><span>{{ course.authors }}</span>
+						<br>
+						<strong>Date: </strong><span>{{ course.date }}</span>
+					</li>
+					<br>
+		    </template>
+			</ul>
+
 		</div>
 
 	</template>
@@ -62,31 +72,31 @@
 				value: [
 					      {
 					        title: 'Title 1',
-					        authors: 'Author 1',
+					        authors: 'Hannibal Smith',
 									date: moment()
 					      },
 					      {
 					        title: 'X Title 2',
-					        authors: 'Author 2',
+					        authors: 'BA Barracus',
 									date: moment().subtract(4, 'days')
 					      },
 					      {
 					        title: 'C Title 3',
-					        authors: 'Author 3',
+					        authors: 'Fenix',
 									date: moment().subtract(3, 'days')
 					      },
 					      {
 					        title: 'X Title 4',
-					        authors: 'Author 4',
+					        authors: 'Murdock',
 									date: moment().subtract(5, 'days')
 					      },
 					      {
 					        title: 'B Title 5',
-					        authors: 'Author 5',
+					        authors: 'Marty McFly',
 					      },
 					      {
 					        title: 'A Title 6',
-					        authors: 'Author 6',
+					        authors: 'Raoul Duke',
 					      },
 				      ]
 			},
