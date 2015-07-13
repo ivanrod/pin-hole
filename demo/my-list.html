@@ -1,6 +1,11 @@
 <dom-module id="my-list">
 	<template>
-
+		<iron-ajax
+    auto
+    url="./randomBooks.json"
+    handle-as="json"
+    on-response="handleResponse"
+    debounce-duration="300"></iron-ajax>
 
 		<h2>My list</h2>
 		<div>
@@ -69,6 +74,7 @@
 			},
 			myCourses: {
 				type: Array,
+				notify: true,
 				value: [
 					      {
 					        title: 'Title 1',
@@ -99,8 +105,11 @@
 					        authors: 'Raoul Duke',
 					      },
 				      ]
-			},
+			}
 
+		},
+		handleResponse: function(data, response){
+			this.myCourses = response.response;
 		},
 	})
 </script>
